@@ -1,9 +1,9 @@
-interface TelegramBotBody {
+export interface TelegramBotBody {
   update_id: number;
   message: TelegramBotMessage;
 }
 
-interface TelegramBotMessage {
+export interface TelegramBotMessage {
   message_id: number;
   from: TelegramBotSender;
   chat: TelegramBotChat;
@@ -11,14 +11,14 @@ interface TelegramBotMessage {
   text: string;
 }
 
-interface TelegramBotChat {
+export interface TelegramBotChat {
   id: number;
   first_name: string;
   username: string;
   type: string;
 }
 
-interface TelegramBotSender {
+export interface TelegramBotSender {
   id: number;
   is_bot: boolean;
   first_name: string;
