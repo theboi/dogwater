@@ -9,17 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "dotenv": "^17.2.2",
+    "next": "15.5.3",
+    "node-telegram-bot-api": "^0.66.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.3"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/node-telegram-bot-api": "^0.64.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "@eslint/eslintrc": "^3"
+    "ngrok": "^5.0.0-beta.2",
+    "typescript": "^5"
   }
 }
