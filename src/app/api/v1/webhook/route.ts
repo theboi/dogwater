@@ -1,14 +1,18 @@
 import TelegramBot from "node-telegram-bot-api";
 import { NextRequest } from "next/server";
-import FF from "../forum";
 import { configDotenv } from "dotenv";
 import { parseCommand } from "../helper/parseCommand";
-import { TelegramBotMessage } from "../helper/telegramBot";
-import { DogwaterCommand } from "../helper/dogwater";
-import { DogwaterInsight } from "../endpoints/insight";
+import { TelegramBotMessage } from "../types/telegramBot";
+import { DogwaterCommand } from "../types/dogwater";
+import { getInsight } from "../endpoints/insight";
+import { Scraper } from "../scraper/base";
+import { RedditScraper } from "../scraper/reddit";
+import { DogwaterBot } from "../helper/dogwaterBot";
 
 configDotenv();
 const isProduction = process.env.VERCEL_ENV === "production";
+
+Scraper.register("reddit.com", RedditScraper);
 
 export async function POST(req: NextRequest) {
   const bot = new TelegramBot(process.env.TELEGRAM_TOKEN ?? "MISSING_TOKEN");
@@ -19,10 +23,9 @@ export async function POST(req: NextRequest) {
     const { cmd, args } = parseCommand(msg);
     
     switch (cmd) {
-      case DogwaterCommand.Insight:
-        DogwaterInsight(bot, args[0])
+      case DogwaterCommand.Insight: getInsight(new DogwaterBot(bot, chatId), args[0])
       default: 
-        await bot.sendMessage(chatId, `*Message received*\n\n${msg.text}`, { parse_mode: "MarkdownV2" });
+        // await bot.sendMessage(chatId, `*Message received*\n\n${parseMarkdownEscape(msg.text)}`, { parse_mode: "MarkdownV2" });
     }
 
     return new Response("OK", { status: 200 });

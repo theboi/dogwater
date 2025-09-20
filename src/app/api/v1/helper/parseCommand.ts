@@ -1,5 +1,5 @@
-import { DogwaterCommand } from "./dogwater";
-import { TelegramBotMessage } from "./telegramBot";
+import { DogwaterCommand } from "../types/dogwater";
+import { TelegramBotMessage } from "../types/telegramBot";
 
 export function parseCommand(msg: TelegramBotMessage): { cmd: DogwaterCommand, args: string[] } {
   const delimited_entries = msg.text.split(" ");
