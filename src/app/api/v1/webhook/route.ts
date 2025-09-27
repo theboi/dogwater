@@ -5,7 +5,7 @@ import { TelegramBotMessage } from "../types/telegramBot";
 import { DogwaterCommand } from "../types/dogwater";
 import { slashInsight } from "../endpoints/insight";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
-import { RedditPostScraperPage } from "../scraper/reddit";
+import { RedditPostScraperPage } from "../scraper/redditPost";
 import { ScraperPage } from "../scraper/scraperPage";
 
 configDotenv();

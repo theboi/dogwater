@@ -1,7 +1,7 @@
 import { Scraper } from "../scraper/scraper";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
 
-export async function slashInsight(bot: SafeTelegramBot, url: string) {
+export async function slashBucket(bot: SafeTelegramBot, url: string) {
   const scraper = new Scraper();
   const scraperPage = await scraper.newPage(url);
 
@@ -9,5 +9,5 @@ export async function slashInsight(bot: SafeTelegramBot, url: string) {
 
   console.log(post)
 
-  await bot.safeSendMessage(`The page title is: ${post.pageTitle}\nContent: ${post.content ?? "No Content Found."}`)
+  // await bot.safeSendMessage(`The page title is: ${post.pageTitle}\nContent: ${post.content ?? "No Content Found."}`)
 }
