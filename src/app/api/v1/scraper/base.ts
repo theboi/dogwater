@@ -16,7 +16,7 @@ export abstract class Scraper {
   async ready() {
     if (!this.isReady) {
       this.browser = await chromium.launch({
-        // headless: true,
+        headless: true,
         args: ["--start-maximized"],
       });
       this.context = await this.browser.newContext({

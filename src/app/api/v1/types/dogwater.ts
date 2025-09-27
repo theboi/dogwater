@@ -12,7 +12,7 @@ export interface DogwaterPost {
   postTitle: string;
   date: Date;
   author: string;
-  content: string;
+  content: string | null;
   likes: number;
   comments: DogwaterComment[];
 }
