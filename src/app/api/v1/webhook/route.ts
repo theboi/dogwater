@@ -31,8 +31,7 @@ export async function POST(req: NextRequest) {
 
     return new Response("OK", { status: 200 });
   } catch (e) {
-    await bot.sendMessage(chatId, `*Unexpected error occurred*`, { parse_mode: "MarkdownV2" });
-    // await bot.sendMessage(chatId, `*Unexpected error occurred*\n\n${e instanceof Error ? e.message : e}`, { parse_mode: "MarkdownV2" });
+    await bot.safeSendMessage(`*Unexpected error occurred*\n\n${e instanceof Error ? e.message : e}`, { parse_mode: "MarkdownV2" })
     return new Response(`Webhook error: ${e}`, {
       status: 200, // 200 because otherwise Telegram will keep pinging non-stop until 200 is returned
     });
