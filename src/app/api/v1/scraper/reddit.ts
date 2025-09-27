@@ -1,19 +1,14 @@
-import { BrowserContext, ChromiumBrowser } from "playwright";
+import { ScraperPage } from "./scraperPage";
 import { DogwaterPost } from "../types/dogwater";
-import { Scraper } from "./base";
 import * as cheerio from "cheerio";
 import fs from "fs";
-import { expect } from "playwright/test";
 
-export class RedditScraper extends Scraper {
+export class RedditPostScraperPage extends ScraperPage {
   async scrape(): Promise<DogwaterPost> {
-    this.ready();
     console.log("Scraping Reddit:", this.url);
 
-    const page = await (this.context as BrowserContext).newPage();
-    await page.goto(this.url);
-    const title = await page.title();
-    const content = await page.content();
+    const title = await this.page!.title();
+    const content = await this.page!.content();
     const $ = cheerio.load(content);
 
     fs.writeFile("output.html", content, () => {});
@@ -53,13 +48,13 @@ export class RedditScraper extends Scraper {
     });
 
     // Certain properties cannot be obtained via Cheerio because it lives in #shadow-root (shadow DOM) and is not exposed when running page.content()
-    const unresolvedLikes = await page.locator('shreddit-comment shreddit-comment-action-row span[slot="vote-button"] faceplate-number').all()
+    const unresolvedLikes = await this.page!.locator('shreddit-comment shreddit-comment-action-row span[slot="vote-button"] faceplate-number').all()
     const likes = await Promise.all(unresolvedLikes.map((e) => e.textContent()));
 
     console.log(comments);
     console.log(likes);
 
-    await (this.browser as ChromiumBrowser).close();
+    await this.page!.close();
 
     return {
       id: "",

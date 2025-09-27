@@ -7,7 +7,7 @@ export function parseCommand(msg: TelegramBotMessage): { cmd: DogwaterCommand, a
   const args = delimited_entries.slice(1);
 
   if (cmd === undefined) {
-    throw new Error("Invalid Dogwater command: Commands must follow '/command'.")
+    throw new Error("Invalid Dogwater command: Messages must begin with '/command'.")
   } else if (!(Object).values(DogwaterCommand).includes(cmd as DogwaterCommand)) {
     throw new Error(`Invalid Dogwater command: Only the following commands are valid\n${(Object).values(DogwaterCommand).join(", ")}.`)
   }

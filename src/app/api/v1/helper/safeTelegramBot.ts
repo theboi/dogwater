@@ -11,7 +11,7 @@ export class SafeTelegramBot extends TelegramBot {
     this.chatId = chatId
   }
 
-async safeSendMessage(msg: string, options: TelegramBot.SendMessageOptions) {
+async safeSendMessage(msg: string, options?: TelegramBot.SendMessageOptions) {
     const newMsg = parseMarkdownEscape(msg);
     for (let i = 0; i < newMsg.length; i += TELEGRAM_MSG_LIMIT) {
       await this.sendMessage(this.chatId, newMsg.slice(i, i+TELEGRAM_MSG_LIMIT), options);

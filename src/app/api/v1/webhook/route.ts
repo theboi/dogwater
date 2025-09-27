@@ -1,18 +1,17 @@
-import TelegramBot from "node-telegram-bot-api";
 import { NextRequest } from "next/server";
 import { configDotenv } from "dotenv";
 import { parseCommand } from "../helper/parseCommand";
 import { TelegramBotMessage } from "../types/telegramBot";
 import { DogwaterCommand } from "../types/dogwater";
 import { slashInsight } from "../endpoints/insight";
-import { Scraper } from "../scraper/base";
-import { RedditScraper } from "../scraper/reddit";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
+import { RedditPostScraperPage } from "../scraper/reddit";
+import { ScraperPage } from "../scraper/scraperPage";
 
 configDotenv();
 const isProduction = process.env.VERCEL_ENV === "production";
 
-Scraper.register("reddit.com", RedditScraper);
+ScraperPage.register("reddit.com", RedditPostScraperPage);
 
 export async function POST(req: NextRequest) {
   const msg: TelegramBotMessage = (await req.json()).message;
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     await bot.safeSendMessage(`*Unexpected error occurred*\n\n${e instanceof Error ? e.message : e}`, { parse_mode: "MarkdownV2" })
     return new Response(`Webhook error: ${e}`, {
-      status: 200, // 200 because otherwise Telegram will keep pinging non-stop until 200 is returned
+      status: 200, // 200 because otherwise Telegram will keep pinging webhook non-stop until 200 is returned
     });
   }
 }

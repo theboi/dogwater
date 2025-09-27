@@ -1,12 +1,14 @@
-import { Scraper } from "../scraper/base";
+import { Scraper } from "../scraper/scraper";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
 import TelegramBot from "node-telegram-bot-api";
 
 type getCommand = (bot: SafeTelegramBot, url: string) => void;
 
 export async function slashInsight(bot: SafeTelegramBot, url: string) {
-  const scraper = await Scraper.init(url)
-  const post = await scraper.scrape();
+  const scraper = new Scraper();
+  const scraperPage = await scraper.newPage(url);
+
+  const post = await scraperPage.scrape();
 
   console.log(post)
 

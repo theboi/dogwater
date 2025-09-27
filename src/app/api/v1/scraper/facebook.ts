@@ -1,4 +1,4 @@
-import { Scraper } from "./base";
+import { Scraper } from "./scraper";
 
 class FacebookScraper extends Scraper {
   scrape(): void {
