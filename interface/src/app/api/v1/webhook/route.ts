@@ -7,6 +7,7 @@ import { slashInsight } from "../endpoints/insight";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
 import { RedditPostScraperPage } from "../scraper/redditPost";
 import { ScraperPage } from "../scraper/scraperPage";
+import { slashBucket } from "../endpoints/bucket";
 
 configDotenv();
 const isProduction = process.env.VERCEL_ENV === "production";
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
     
     switch (cmd) {
       case DogwaterCommand.Insight: slashInsight(bot, args[0])
+      case DogwaterCommand.Bucket: slashBucket(bot, args[0])
       default: 
         // await bot.sendMessage(chatId, `*Message received*\n\n${parseMarkdownEscape(msg.text)}`, { parse_mode: "MarkdownV2" });
     }

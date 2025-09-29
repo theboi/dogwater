@@ -51,9 +51,6 @@ export class RedditPostScraperPage extends ScraperPage {
     const unresolvedLikes = await this.page!.locator('shreddit-comment shreddit-comment-action-row span[slot="vote-button"] faceplate-number').all()
     const likes = await Promise.all(unresolvedLikes.map((e) => e.textContent()));
 
-    console.log(comments);
-    console.log(likes);
-
     await this.page!.close();
 
     return {
@@ -62,7 +59,7 @@ export class RedditPostScraperPage extends ScraperPage {
       postTitle: post.post?.title as string,
       date: new Date(),
       author: "",
-      content: post.post?.content as string,
+      content: post.post!.content!.trim().slice(0, -9).trim(), // Get rid of "Read more" hidden text
       likes: -1,
       comments: comments.comments.map((e, i) => ({
         id: (e.id as string).slice(0, -23), // "-comment-rtjson-content".length=23

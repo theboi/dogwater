@@ -1,6 +1,7 @@
 import { BrowserContext, chromium, ChromiumBrowser, Page } from "playwright";
 import { ScraperPage } from "./scraperPage";
 
+// TODO: implement Singleton pattern for Scraper
 export class Scraper {
   private browser?: ChromiumBrowser;
   private context?: BrowserContext;
