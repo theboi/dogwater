@@ -12,14 +12,14 @@ export class SafeTelegramBot extends TelegramBot {
   }
 
 async safeSendMessage(msg: string, options?: TelegramBot.SendMessageOptions) {
-    const newMsg = parseMarkdownEscape(msg);
-    for (let i = 0; i < newMsg.length; i += TELEGRAM_MSG_LIMIT) {
-      await this.sendMessage(this.chatId, newMsg.slice(i, i+TELEGRAM_MSG_LIMIT), options);
+    for (let i = 0; i < msg.length; i += TELEGRAM_MSG_LIMIT) {
+      await this.sendMessage(this.chatId, msg.slice(i, i+TELEGRAM_MSG_LIMIT), options);
     }
   }
 }
 
 // As per the specifications in https://core.telegram.org/bots/api#formatting-options
+// Function must be manually called when using parse_mode: "MarkdownV2" with safeSendMessage
 export function parseMarkdownEscape(unparsed: string): string {
   return unparsed.replace(/([_*\[\]()~`>#+\-=|{}.!])/g, "\\$1");
 }

@@ -4,7 +4,7 @@ import { parseCommand } from "../helper/parseCommand";
 import { TelegramBotMessage } from "../types/telegramBot";
 import { DogwaterCommand } from "../types/dogwater";
 import { slashInsight } from "../endpoints/insight";
-import { SafeTelegramBot } from "../helper/safeTelegramBot";
+import { parseMarkdownEscape, SafeTelegramBot } from "../helper/safeTelegramBot";
 import { RedditPostScraperPage } from "../scraper/redditPost";
 import { ScraperPage } from "../scraper/scraperPage";
 import { slashBucket } from "../endpoints/bucket";
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     return new Response("OK", { status: 200 });
   } catch (e) {
     if (isProduction) throw e;
-    await bot.safeSendMessage(`*Unexpected error occurred*\n\n${e instanceof Error ? e.message : e}`, { parse_mode: "MarkdownV2" })
+    await bot.safeSendMessage(`*Unexpected error occurred*\n\n${parseMarkdownEscape(`${e instanceof Error ? e.message : e}`)}`, { parse_mode: "MarkdownV2" })
     return new Response(`Webhook error: ${e}`, {
       status: 200, // 200 because otherwise Telegram will keep pinging webhook non-stop until 200 is returned
     });
