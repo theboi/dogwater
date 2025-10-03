@@ -46,6 +46,7 @@ export class RedditPostScraperPage extends ScraperPage {
         },
       },
     });
+    console.log(comments, post)
 
     // Certain properties cannot be obtained via Cheerio because it lives in #shadow-root (shadow DOM) and is not exposed when running page.content()
     const unresolvedLikes = await this.page!.locator('shreddit-comment shreddit-comment-action-row span[slot="vote-button"] faceplate-number').all()

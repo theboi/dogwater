@@ -1,6 +1,7 @@
 import { Scraper } from "../scraper/scraper";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
 import { InferenceClient } from "@huggingface/inference";
+import { getBaseUrl } from "../helper/getBaseUrl";
 
 export async function slashBucket(bot: SafeTelegramBot, url: string) {
   const scraper = new Scraper();
@@ -12,13 +13,21 @@ export async function slashBucket(bot: SafeTelegramBot, url: string) {
 
   const client = new InferenceClient(process.env.HF_TOKEN);
 
-  const summarisedPost = await client.summarization({
-    model: "philschmid/distilbart-cnn-12-6-samsum",
-    inputs: post.content!,
-    provider: "hf-inference",
-  });
+  const summarizePostResponse = await fetch(`${getBaseUrl()}/api/v1/model/summarize_post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text: post.content })
+  })
 
-  const commentsPrependPost = post.comments.map(e => `POST: ${summarisedPost}\nCOMMENT: ${e.message}`)
+  if (!summarizePostResponse.ok) {
+    throw new Error("Failed to summarize post")
+  }
 
-  await bot.safeSendMessage(summarisedPost.summary_text)
+  const summarizedPost = await summarizePostResponse.json();
+
+  const commentsPrependPost = post.comments.map(e => `POST: ${summarizedPost.summary}\nCOMMENT: ${e.message}`)
+
+  await bot.safeSendMessage(summarizedPost.summary)
 }

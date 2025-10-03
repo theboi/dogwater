@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@huggingface/inference": "^4.9.0",
+    "@sparticuz/chromium": "^138.0.2",
     "cheerio": "^1.1.2",
     "dotenv": "^17.2.2",
     "fs": "^0.0.1-security",
     "next": "15.5.3",
     "node-telegram-bot-api": "^0.66.0",
-    "playwright": "^1.55.0",
+    "playwright-core": "^1.55.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },

@@ -1,4 +1,4 @@
-import { BrowserContext, Page } from "playwright";
+import { BrowserContext, Page } from "playwright-core";
 import { DogwaterPost } from "../types/dogwater";
 
 export abstract class ScraperPage {

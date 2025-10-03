@@ -1,5 +1,8 @@
-import { BrowserContext, chromium, ChromiumBrowser, Page } from "playwright";
+import { BrowserContext, chromium, ChromiumBrowser } from "playwright-core";
 import { ScraperPage } from "./scraperPage";
+import chromiumBinary from "@sparticuz/chromium";
+
+const isProduction = process.env.VERCEL_ENV === "production";
 
 // TODO: implement Singleton pattern for Scraper
 export class Scraper {
@@ -15,8 +18,9 @@ export class Scraper {
   async readyBrowser() {
     if (!this.browser || !this.context) {
       this.browser = await chromium.launch({
+        executablePath: isProduction ? await chromiumBinary.executablePath() : process.env.CHROME_EXECUTABLE_PATH,
         headless: true,
-        args: ["--start-maximized"],
+        args: isProduction ? chromiumBinary.args : ["--start-maximized"],
       });
       this.context = await this.browser.newContext({
         viewport: {

@@ -22,16 +22,17 @@ export async function POST(req: NextRequest) {
 
   try {
     const { cmd, args } = parseCommand(msg);
-    
+
     switch (cmd) {
-      case DogwaterCommand.Insight: slashInsight(bot, args[0])
-      case DogwaterCommand.Bucket: slashBucket(bot, args[0])
+      case DogwaterCommand.Insight: await slashInsight(bot, args[0]); break;
+      case DogwaterCommand.Bucket: await slashBucket(bot, args[0]); break;
       default: 
         // await bot.sendMessage(chatId, `*Message received*\n\n${parseMarkdownEscape(msg.text)}`, { parse_mode: "MarkdownV2" });
     }
 
     return new Response("OK", { status: 200 });
   } catch (e) {
+    if (isProduction) throw e;
     await bot.safeSendMessage(`*Unexpected error occurred*\n\n${e instanceof Error ? e.message : e}`, { parse_mode: "MarkdownV2" })
     return new Response(`Webhook error: ${e}`, {
       status: 200, // 200 because otherwise Telegram will keep pinging webhook non-stop until 200 is returned
