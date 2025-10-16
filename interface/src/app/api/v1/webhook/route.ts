@@ -8,13 +8,16 @@ import { parseMarkdownEscape, SafeTelegramBot } from "../helper/safeTelegramBot"
 import { RedditPostScraperPage } from "../scraper/redditPost";
 import { ScraperPage } from "../scraper/scraperPage";
 import { slashBucket } from "../endpoints/bucket";
+import { HardwarezonePostScraperPage } from "../scraper/hardwarezonePost";
 
 configDotenv();
 const isProduction = process.env.VERCEL_ENV === "production";
 
 ScraperPage.register("reddit.com", RedditPostScraperPage);
+ScraperPage.register("forums.hardwarezone.com.sg", HardwarezonePostScraperPage)
 
 export async function POST(req: NextRequest) {
+  console.log("Webhook request received.")
   const msg: TelegramBotMessage = (await req.json()).message;
   const chatId = msg.chat.id;
 
@@ -23,6 +26,7 @@ export async function POST(req: NextRequest) {
   try {
     const { cmd, args } = parseCommand(msg);
 
+    console.log("Command:", cmd as string)
     switch (cmd) {
       case DogwaterCommand.Insight: await slashInsight(bot, args[0]); break;
       case DogwaterCommand.Bucket: await slashBucket(bot, args[0]); break;

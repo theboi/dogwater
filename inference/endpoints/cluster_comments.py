@@ -4,22 +4,20 @@ from sklearn.cluster import DBSCAN
 
 cluster_comments_bp = Blueprint("cluster_comments", __name__)
 
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
+embedder = SentenceTransformer("unsloth/mistral-7b-instruct-v0.3")
 
 @cluster_comments_bp.route("/cluster_comments", methods=["POST"])
-def cluster_comments():
-    data = request.get_json()
+def cluster_comments(test_data: str = None):
+    data = request.get_json() if not test_data else test_data
     if not data or "comments" not in data:
         return jsonify({"error": "Missing 'comments' in request body"}), 400
 
     comments = data["comments"]
 
     embeddings = embedder.encode(comments)
-    if len(comments) == 1:
-        embeddings = [embeddings]  # Ensure 2D shape for single comment
+    if len(comments) == 1: embeddings = [embeddings]
 
-    # DBSCAN does not require n_clusters; eps and min_samples can be tuned
-    clustering = DBSCAN(eps=1.0, min_samples=2).fit(embeddings)
+    clustering = DBSCAN(eps=0.5, min_samples=2).fit(embeddings)
     cluster_ids = clustering.labels_
 
     clusters = {}

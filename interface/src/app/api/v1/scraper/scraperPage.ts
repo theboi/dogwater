@@ -16,7 +16,9 @@ export abstract class ScraperPage {
   private async readyPage() {
     if (!this.page) {
       this.page = await this.parentContext.newPage();
-      await this.page.goto(this.url);
+      console.log("START LOAD")
+      await this.page.goto(this.url, { waitUntil: "domcontentloaded" });
+      console.log("FINISH LOAD")
     }
   }
 

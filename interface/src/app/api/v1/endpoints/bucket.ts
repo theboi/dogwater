@@ -8,7 +8,7 @@ export async function slashBucket(bot: SafeTelegramBot, url: string) {
 
   const post = await scraperPage.scrape();
 
-  // console.log(post)
+  console.log(post)
 
   const summarizePostResponse = await fetch(`${getBaseUrl()}/api/v1/model/summarize_post`, {
     method: "POST",
@@ -23,8 +23,9 @@ export async function slashBucket(bot: SafeTelegramBot, url: string) {
   }
   const summarizedPost = await summarizePostResponse.json();
 
-  const commentsPrependPost = post.comments.map(e => `POST: ${summarizedPost.summary}\nCOMMENT: ${e.message}`)
+  console.log(summarizedPost.summary)
 
+  const commentsPrependPost = post.comments.map(e => `POST: ${summarizedPost.summary}\nCOMMENT: ${e.message}`)
 
   const clusterCommentsResponse = await fetch(`${getBaseUrl()}/api/v1/model/cluster_comments`, {
     method: "POST",
