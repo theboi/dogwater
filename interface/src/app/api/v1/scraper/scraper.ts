@@ -19,7 +19,7 @@ export class Scraper {
     if (!this.browser || !this.context) {
       this.browser = await chromium.launch({
         executablePath: isProduction ? await chromiumBinary.executablePath() : process.env.CHROME_EXECUTABLE_PATH,
-        headless: isProduction,
+        headless: true, //isProduction,
         args: isProduction ? chromiumBinary.args : ["--start-maximized"],
       });
       this.context = await this.browser.newContext({
