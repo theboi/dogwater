@@ -1,11 +1,13 @@
 import { ScraperPage } from "./scraperPage";
 import { DogwaterPost } from "../types/dogwater";
 import * as cheerio from "cheerio";
+import { hardwarezoneNoOfLikes } from "../helper/hardwarezoneNoOfLikes";
 
 export class HardwarezonePostScraperPage extends ScraperPage {
   async scrape(): Promise<DogwaterPost> {
     console.log("Scraping HardwareZone:", this.url);
     const content = await this.page!.content();
+    const pageTitle = await this.page?.title();
 
     const $ = cheerio.load(content);
 
@@ -32,6 +34,7 @@ export class HardwarezonePostScraperPage extends ScraperPage {
             },
             author: ".message-userDetails .message-name",
             content: ".message-content .bbWrapper",
+            reactionSummary: ".reactionsBar-link"
           },
         },
       ],
@@ -42,22 +45,20 @@ export class HardwarezonePostScraperPage extends ScraperPage {
 
     return {
       id: extractedPage.comments[0].id!,
-      pageTitle: extractedPage.title ?? "No Title",
+      pageTitle: pageTitle ?? "No Title",
       postTitle: extractedPage.title ?? "No Title",
       date: new Date(extractedPage.datetime!),
       author: extractedPage.author ?? "No Author",
       content: extractedPage.comments[0].content?.trim() ?? "No Content",
-      likes: -1, // TODO: implement this
+      likes: hardwarezoneNoOfLikes(extractedPage.comments[0].reactionSummary ?? ""),
       comments: extractedPage.comments.slice(1).map(e => ({
         id: e.id!,
         date: new Date(e.datetime!),
         author: e.author ?? "No Author",
         message: e.content?.trim() ?? "No Content",
-        likes: -1,
+        likes: hardwarezoneNoOfLikes(e.reactionSummary ?? ""),
         subcomments: [], // HardwareZone has no subcomments feature
       })),
     };
-
-    // return {} as DogwaterPost
   }
 }
