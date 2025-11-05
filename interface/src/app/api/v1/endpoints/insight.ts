@@ -9,5 +9,5 @@ export async function slashInsight(bot: SafeTelegramBot, url: string) {
 
   console.log(post)
 
-  await bot.safeSendMessage(`The page title is: ${post.pageTitle}\nContent: ${post.content ?? "No Content Found."}`)
+  await bot.safeSendMessage(`Page Title: ${post.pageTitle}\nContent: ${post.content ?? "No Content Found."}`)
 }

@@ -1,6 +1,7 @@
 import { Scraper } from "../scraper/scraper";
 import { SafeTelegramBot } from "../helper/safeTelegramBot";
 import { getBaseUrl } from "../helper/getBaseUrl";
+import { writeFile } from "fs";
 
 export async function slashBucket(bot: SafeTelegramBot, url: string) {
   const scraper = new Scraper();
@@ -8,7 +9,7 @@ export async function slashBucket(bot: SafeTelegramBot, url: string) {
 
   const post = await scraperPage.scrape();
 
-  console.log(post)
+  writeFile("./sample_output/hardwarezone.json", JSON.stringify(post), () => {})
 
   const summarizePostResponse = await fetch(`${getBaseUrl()}/api/v1/model/summarize_post`, {
     method: "POST",

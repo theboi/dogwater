@@ -1,7 +1,7 @@
 export function hardwarezoneNoOfLikes(summary: string): number {
   if (summary === "") return 0; // eg: ""
 
-  // Assume usernames do NOT contain commas or spaces
+  // Assume usernames do NOT contain commas or the special keywords (ignoring edge cases)
   if (summary.includes(" and ")) {
     if (summary.includes(",")) {
       if (summary.includes(" other ") || summary.includes(" others ")) {
